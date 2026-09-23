@@ -1,0 +1,22 @@
+from multiprocessing import Process
+
+def calculate(number):
+    result = number * number
+    print(number, "=>", result)
+
+
+if __name__ == '__main__':
+
+    numbers = [10, 20, 30, 40]
+
+    processes = []
+
+    for number in numbers:
+        p = Process(target=calculate, args=(number,))
+        processes.append(p)
+        p.start()
+
+    for p in processes:
+        p.join()
+
+    print("Processing completed")
