@@ -1,22 +1,53 @@
-from multiprocessing import Process
+def merge_sort(arr):
 
-def calculate(number):
-    result = number * number
-    print(number, "=>", result)
+    # Base condition
+    if len(arr) <= 1:
+        return arr
+
+    # Divide
+    mid = len(arr) // 2
+
+    left = arr[:mid]
+    right = arr[mid:]
+
+    # Conquer
+    left = merge_sort(left)
+    right = merge_sort(right)
+
+    # Combine
+    return merge(left, right)
 
 
-if __name__ == '__main__':
+def merge(left, right):
 
-    numbers = [10, 20, 30, 40]
+    result = []
+    i = 0
+    j = 0
 
-    processes = []
+    # Compare elements from both arrays
+    while i < len(left) and j < len(right):
 
-    for number in numbers:
-        p = Process(target=calculate, args=(number,))
-        processes.append(p)
-        p.start()
+        if left[i] <= right[j]:
+            result.append(left[i])
+            i += 1
+        else:
+            result.append(right[j])
+            j += 1
 
-    for p in processes:
-        p.join()
+    # Add remaining elements
+    result.extend(left[i:])
+    result.extend(right[j:])
 
-    print("Processing completed")
+    return result
+
+
+# Main program
+numbers = [38, 27, 43, 3, 9, 82, 10]
+
+print("Original array:")
+print(numbers)
+
+sorted_numbers = merge_sort(numbers)
+
+print("Sorted array:")
+print(sorted_numbers)
